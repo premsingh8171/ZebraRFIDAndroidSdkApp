@@ -1,0 +1,44 @@
+﻿@page "/"
+
+<h1>Hello, world!</h1>
+
+Welcome to your Zebra RFID Android App.
+
+<h3>RFID Scanner</h3>
+
+<button @onclick="StartScanning">Start Scanning</button>
+<button @onclick="StopScanning">Stop Scanning</button>
+
+<p>@scannedData</p>
+
+@code {
+    private ZebraRfidScanner scanner;
+    private string scannedData;
+
+    private void StartScanning()
+    {
+        // Initialize and start the RFID scanner
+        scanner = new ZebraRfidScanner();
+        scanner.OnDataReceived += OnDataReceivedHandler;
+        scanner.StartScanning();
+    }
+
+    private void StopScanning()
+    {
+        // Stop the RFID scanner
+        scanner?.StopScanning();
+    }
+
+    private void OnDataReceivedHandler(string data)
+    {
+        // Handle the received RFID data
+        scannedData = data;
+        StateHasChanged();
+    }
+
+    // Cleanup resources when the component is disposed
+    public void Dispose()
+    {
+        scanner?.Dispose();
+    }
+}
